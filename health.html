@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>แบบสอบถามสุขภาพ</title>
+    <meta name="description" content="Health survey with live BMI ">
+    <style>
+        :root {
+            --bg: #f0f4fa;
+            --card: #fff;
+            --radius: 12px;
+            --shadow: 0 24px 60px rgba(0, 0, 0, .07);
+            --primary: #1e3a8a;
+            --danger: #b91c1c;
+            --success: #047857;
+            --text: #1f2d44;
+            --muted: #6e7a8c;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 12px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1.75rem;
+        }
+
+        .sub {
+            color: var(--muted);
+            margin: 4px 0 16px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        input[type=number],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d7dfe9;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        .inline {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .error {
+            color: var(--danger);
+            font-size: 13px;
+            min-height: 18px;
+            margin-top: 4px;
+        }
+
+        .hint {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .bmi-box {
+            background: #f7f9fe;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #dbe5f0;
+            margin-bottom: 16px;
+        }
+
+        .category {
+            font-weight: 700;
+        }
+
+        .advice {
+            padding: 14px;
+            border-radius: 10px;
+            background: #e6f7ef;
+            border: 1px solid var(--success);
+            margin-top: 8px;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            background: var(--primary);
+            color: #fff;
+        }
+
+        dialog {
+            border: none;
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, .2);
+        }
+
+        .modal {
+            padding: 20px;
+            font-family: inherit;
+        }
+
+        .flex {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .navbar {
+            background: #253746;
+            /* Nile Blue */
+            color: white;
+            padding: 10px 16px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            color: #BEC5C7;
+            /* Cloudy */
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background-color: #6B7B8C;
+            /* Bermuda Gray */
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .nav-item {
+                padding: 12px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="event-booking.html" class="logo">CSMJU Souvenir</a>
+            <ul class="nav-links">
+                <li><a href="booking.html" class="nav-item">จองตั๋วกิจกรรม</a></li>
+                <li><a href="health.html" class="nav-item">แบบสอบถามสุขภาพ</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" aria-label="Health survey">
+        <div class="card">
+            <h1>แบบสอบถามสุขภาพ</h1>
+            <p class="sub">กรอกข้อมูลพื้นฐานเพื่อดู BMI และคำแนะนำแบบทันที</p>
+            <form id="form" novalidate>
+                <div class="field">
+                    <label for="age">อายุ</label>
+                    <input id="age" type="number" min="15" max="60" placeholder="15–60" />
+                    <div class="error" id="errAge"></div>
+                    <div class="small">อายุระหว่าง 15–60 ปี</div>
+                </div>
+
+                <div class="field">
+                    <label>เพศ</label>
+                    <div class="inline" role="group">
+                        <label><input type="radio" name="gender" value="ชาย"> ชาย</label>
+                        <label><input type="radio" name="gender" value="หญิง"> หญิง</label>
+                        <label><input type="radio" name="gender" value="อื่นๆ"> อื่นๆ</label>
+                    </div>
+                    <div class="error" id="errGender"></div>
+                </div>
+
+                <div class="flex">
+                    <div class="field" style="flex:1; min-width:180px;">
+                        <label for="weight">น้ำหนัก (กก.)</label>
+                        <input id="weight" type="number" step="0.1" placeholder="เช่น 60.5" />
+                        <div class="error" id="errWeight"></div>
+                    </div>
+                    <div class="field" style="flex:1; min-width:180px;">
+                        <label for="height">ส่วนสูง (ซม.)</label>
+                        <input id="height" type="number" step="0.1" placeholder="เช่น 170" />
+                        <div class="error" id="errHeight"></div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label><input type="checkbox" id="hasDisease"> มีโรคประจำตัว</label>
+                    <div class="error" id="errDisease"></div>
+                    <div style="margin-top:8px;">
+                        <textarea id="diseaseDetail" rows="3" placeholder="ระบุรายละเอียด"
+                            style="width:100%;display:none;border:1px solid #d7dfe9;border-radius:8px;padding:10px;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Live BMI -->
+                <div class="bmi-box" aria-label="BMI preview">
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                        <div>
+                            <div><strong>BMI:</strong> <span id="bmiVal">-</span></div>
+                            <div>หมวดหมู่: <span id="bmiCat" class="category">-</span></div>
+                        </div>
+                        <div style="min-width:140px;">
+                            <div class="small">เกณฑ์ (Asia-Pacific): น้ำหนักน้อย &lt;18.5, ปกติ 18.5–22.9, น้ำหนักเกิน
+                                23–24.9, อ้วน ≥25</div>
+                        </div>
+                    </div>
+                    <div id="advice" class="advice" style="display:none;">
+                        <div id="adviceTitle" style="font-weight:700;margin-bottom:4px;"></div>
+                        <div id="adviceText"></div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn">ส่งแบบสอบถาม</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <dialog id="modal">
+        <div class="modal">
+            <h2>ผลลัพธ์</h2>
+            <p id="summary"></p>
+            <div class="actions">
+                <button class="btn" id="close">ปิด</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        // minimal JS: live BMI, validation, advice, modal
+        const q = id => document.getElementById(id);
+        const get = sel => document.querySelector(sel);
+        const form = q('form');
+        const age = q('age'), weight = q('weight'), height = q('height');
+        const bmiVal = q('bmiVal'), bmiCat = q('bmiCat');
+        const advice = q('advice'), adviceTitle = q('adviceTitle'), adviceText = q('adviceText');
+        const modal = q('modal'), summary = q('summary');
+        const close = q('close');
+        const hasDisease = q('hasDisease'), diseaseDetail = q('diseaseDetail');
+
+        // toggle disease detail
+        hasDisease.addEventListener('change', () => {
+            diseaseDetail.style.display = hasDisease.checked ? 'block' : 'none';
+        });
+
+        function computeBMI() {
+            const w = parseFloat(weight.value);
+            const h = parseFloat(height.value);
+            if (!(w > 0 && h > 0)) {
+                bmiVal.textContent = '-'; bmiCat.textContent = '-';
+                advice.style.display = 'none';
+                return;
+            }
+            const bmi = w / ((h / 100) ** 2);
+            const b = parseFloat(bmi.toFixed(1));
+            bmiVal.textContent = b;
+            let category = '', title = '', text = '';
+            if (b < 18.5) {
+                category = 'น้ำหนักน้อย';
+                title = 'น้ำหนักน้อย';
+                text = 'เพิ่มพลังงานและโปรตีน รับประทานให้ครบถ้วน ออกกำลังกายแบบเสริมกล้ามเนื้อเบาๆ';
+            } else if (b < 23) {
+                category = 'ปกติ';
+                title = 'สมส่วนดี';
+                text = 'รักษาพฤติกรรมปัจจุบัน ออกกำลังกายสม่ำเสมอ และตรวจสุขภาพเป็นประจำ';
+            } else if (b < 25) {
+                category = 'น้ำหนักเกิน';
+                title = 'น้ำหนักเกินเล็กน้อย';
+                text = 'ปรับอาหาร ลดน้ำตาลและแป้ง เพิ่มการเคลื่อนไหวแบบคาร์ดิโอ';
+            } else {
+                category = 'อ้วน';
+                title = 'ควรดูแลเพิ่มเติม';
+                text = 'แนะนำปรึกษาแพทย์หรือผู้เชี่ยวชาญ เริ่มด้วยกิจกรรมเบาๆ และควบคุมอาหาร';
+            }
+            bmiCat.textContent = category;
+            adviceTitle.textContent = title;
+            adviceText.textContent = text;
+            advice.style.display = 'block';
+        }
+
+        // live update when weight/height change
+        [weight, height].forEach(el => {
+            el.addEventListener('input', computeBMI);
+        });
+
+        function getSelectedGender() {
+            const g = document.querySelector('input[name="gender"]:checked');
+            return g ? g.value : '';
+        }
+
+        function clearErrors() {
+            ['errAge', 'errGender', 'errWeight', 'errHeight', 'errDisease'].forEach(id => {
+                const el = q(id);
+                if (el) el.textContent = '';
+            });
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            clearErrors();
+            let ok = true;
+            const a = parseInt(age.value, 10);
+            const g = getSelectedGender();
+            const w = parseFloat(weight.value);
+            const h = parseFloat(height.value);
+            const hasDis = hasDisease.checked;
+            const disText = (diseaseDetail.value || '').trim();
+
+            if (!(a >= 15 && a <= 60)) { q('errAge').textContent = 'อายุต้องอยู่ระหว่าง 15–60 ปี'; ok = false; }
+            if (!g) { q('errGender').textContent = 'โปรดเลือกเพศ'; ok = false; }
+            if (!(w > 0)) { q('errWeight').textContent = 'น้ำหนักต้องเป็นค่าบวก'; ok = false; }
+            if (!(h > 0)) { q('errHeight').textContent = 'ส่วนสูงต้องเป็นค่าบวก'; ok = false; }
+            if (hasDis && !disText) { q('errDisease').textContent = 'กรุณาระบุโรคประจำตัว'; ok = false; }
+
+            if (!ok) return;
+
+            // ensure latest BMI
+            computeBMI();
+            const bmi = bmiVal.textContent;
+            const category = bmiCat.textContent;
+            summary.textContent = `อายุ: ${a}, เพศ: ${g}, BMI: ${bmi} (${category})` + (hasDis ? `, โรคประจำตัว: ${disText}` : '');
+            if (typeof modal.showModal === 'function') modal.showModal();
+            else alert(summary.textContent);
+        });
+
+        close.addEventListener('click', () => modal.close());
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+
+
+ขายของที่ระลึก
+    - สาขาวิทยาการคอมพิวเตอร์ 30 ปีสาขา
+admin   
+    - เตรียบข้อมูลสินค้า
+    stock  เสื้อ: ขนาด, สี, ราคา, จำนวน, ชื่อรุ่น, รายละเอียด, วันที่ขาย, ถึงวันที่, รูปภาพสินค้า
+    - สินค้าอื่นๆ: แก้ว, กระเป๋า, หมวก
+        
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร้านขายของที่ระลึก</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 600px;
+        }
+
+        label {
+            display: inline-block;
+            width: 120px;
+            margin-top: 10px;
+        }
+
+        input, select, textarea {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ร้านขายของที่ระลึก</h1>
+    <p>สาขาวิทยาการคอมพิวเตอร์</p>
+    <h2>admin</h2>
+
+    <form action="#" method="post" enctype="multipart"> 
+        <h3>เสื้อ</h3>
+
+        <div class="form-section">
+            <label for="product_size">ขนาด:</label>
+            <select name="product_size" id="product_size">
+                <option value="" disabled selected>-- กรุณาเลือกขนาด --</option>
+                <option value="xs">XS</option>
+                <option value="s">S</option>
+                <option value="m" selected>M</option>
+                <option value="l">L</option>
+                <option value="xl">XL</option>
+                <option value="2xl">2XL</option>
+                <option value="3xl">3XL</option>
+            </select>
+        </div>
+
+        <div class="form-section">
+            <label>สี:</label>
+            <input type="radio" name="product_color" value="white"> ขาว
+            <input type="radio" name="product_color" value="black"> ดำ
+            <input type="radio" name="product_color" value="blue"> น้ำเงิน
+            <input type="radio" name="product_color" value="gray"> เทา
+        </div>
+
+        <div class="form-section">
+            <label for="product_price">ราคา:</label>
+            <input type="number" name="product_price" id="product_price" min="0" step="10" placeholder="กรุณากรอกราคา">
+        </div>
+
+        <div class="form-section">
+            <label for="product_quantity">จำนวน:</label>
+            <input type="number" name="product_quantity" id="product_quantity" min="1" max="100"
+                placeholder="กรุณากรอกจำนวนสินค้า">
+        </div>
+
+        <div class="form-section">
+            <label for="product_model">ชื่อรุ่น:</label>
+            <input type="text" name="product_model" id="product_model" placeholder="กรุณากรอกชื่อรุ่น">
+        </div>
+
+        <div class="form-section">
+            <label for="product_description">รายละเอียด:</label><br>
+            <textarea name="product_description" id="product_description" cols="30" rows="4"
+                placeholder="กรุณากรอกรายละเอียด" maxlength="100"></textarea>
+        </div>
+
+        <div class="form-section">
+            <label for="startdate">วันที่ขาย:</label>
+            <input type="date" name="startdate" id="startdate">
+            <br><br>
+            <label for="enddate">ถึงวันที่:</label>
+            <input type="date" name="enddate" id="enddate" min="2023-10-01" max="2023-12-31">
+        </div>
+
+        <div class="form-section">
+            <label for="product_image">รูปภาพสินค้า:</label>
+            <input type="file" name="product_image" id="product_image" accept="image/*">
+        </div>
+
+        <div class="form-section">
+            <button type="submit">บันทึก</button>
+            <button type="reset">ล้างข้อมูล</button>
+        </div>
+    </form>
+
+    <h3>สินค้าอื่นๆ</h3>
+    <ul>
+        <li>แก้ว</li>
+        <li>กระเป๋า</li>
+        <li>หมวก</li>
+        <li>ร่ม</li>
+    </ul>
+</body>
+
+</html>

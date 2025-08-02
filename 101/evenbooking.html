@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forms Demo — KeyPro Style</title>
+    <style>
+        :root {
+            --bg: #f7f8fa;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --primary: #1e3a8a;
+            /* deep blue */
+            --primary-2: #3b82f6;
+            /* accent */
+            --ring: #93c5fd;
+            --error: #b91c1c;
+            --success: #065f46;
+            --radius: 16px;
+            --shadow: 0 8px 24px rgba(0, 0, 0, .06);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Sarabun", sans-serif
+        }
+
+        a {
+            color: var(--primary-2);
+            text-decoration: none
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--card);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 10
+        }
+
+        .nav {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px
+        }
+
+        .brand {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            box-shadow: 0 4px 14px rgba(59, 130, 246, .35)
+        }
+
+        .brand strong {
+            font-size: 18px
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 32px auto;
+            padding: 0 20px
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px
+        }
+
+        .tab-btn {
+            appearance: none;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s
+        }
+
+        .tab-btn[aria-selected="true"],
+        .tab-btn:hover {
+            border-color: var(--primary-2);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, .12)
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 22px
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px
+        }
+
+        @media (min-width:768px) {
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .grid-3 {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        form .row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        label {
+            font-weight: 600
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="date"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            background: #fff;
+            outline: none;
+            transition: .15s
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary-2);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, .12)
+        }
+
+        .help {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .error {
+            font-size: 12px;
+            color: var(--error);
+            min-height: 16px
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px
+        }
+
+        .btn {
+            appearance: none;
+            border: 1px solid transparent;
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s
+        }
+
+        .btn.secondary {
+            background: #fff;
+            color: var(--primary);
+            border-color: var(--primary)
+        }
+
+        .btn:focus-visible {
+            outline: 3px solid var(--ring)
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        /* dialog modal */
+        dialog {
+            border: none;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, .2);
+            width: min(520px, 92vw)
+        }
+
+        .modal {
+            padding: 20px
+        }
+
+        .modal h3 {
+            margin: 0 0 6px
+        }
+
+        .modal .muted {
+            color: var(--muted)
+        }
+
+        .modal .ok {
+            margin-top: 12px
+        }
+
+        /* section titles */
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px
+        }
+
+        .section-head h2 {
+            margin: 0;
+            font-size: 20px
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="nav" aria-label="Primary">
+            <div class="brand">
+                <div class="logo" aria-hidden="true"></div><strong>Form Suite — Demo</strong>
+            </div>
+            <div class="muted" style="font-size:14px">KeyPro-like UI • Mobile First</div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="tabs" role="tablist" aria-label="Form Switcher">
+            <button class="tab-btn" role="tab" aria-selected="true" data-tab="event">ฟอร์มจองตั๋ว</button>
+            <button class="tab-btn" role="tab" aria-selected="false" data-tab="health">แบบสอบถามสุขภาพ</button>
+            <button class="tab-btn" role="tab" aria-selected="false" data-tab="kmutt">คำร้อง มจธ.-16
+                โอนย้ายสาขา</button>
+        </div>
+
+        <!-- Event Booking -->
+        <section id="tab-event" class="card" data-tab-panel="event" role="tabpanel">
+            <div class="section-head">
+                <h2>1 ฟอร์มจองตั๋วกิจกรรม (Event Booking)</h2>
+            </div>
+            <form id="eventForm" novalidate>
+                <div class="grid grid-2">
+                    <div class="row">
+                        <label for="evFullName">ชื่อ-นามสกุล</label>
+                        <input id="evFullName" name="fullName" type="text" placeholder="เช่น สมชาย ใจดี"
+                            autocomplete="name" required />
+                        <div class="error" id="evFullNameError"></div>
+                    </div>
+                    <div class="row">
+                        <label for="evPhone">เบอร์โทรศัพท์</label>
+                        <input id="evPhone" name="phone" type="tel" inputmode="numeric" placeholder="0XXXXXXXXX"
+                            required />
+                        <div class="error" id="evPhoneError"></div>
+                    </div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="row">
+                        <label for="evType">ประเภทตั๋ว</label>
+                        <select id="evType" name="type" required>
+                            <option value="">— เลือกประเภท —</option>
+                            <option>ปกติ</option>
+                            <option>VIP</option>
+                            <option>Premium</option>
+                        </select>
+                        <div class="error" id="evTypeError"></div>
+                    </div>
+                    <div class="row">
+                        <label for="evQty">จำนวนตั๋ว</label>
+                        <input id="evQty" name="qty" type="number" min="1" max="5" value="1" required />
+                        <div class="help">จำกัด 1–5 ใบ (ถ้า VIP/Premium จำกัดไม่เกิน 2 ใบ)</div>
+                        <div class="error" id="evQtyError"></div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="btn" type="submit">จองตั๋ว</button>
+                    <button class="btn secondary" type="reset">ล้างข้อมูล</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Health Survey -->
+        <section id="tab-health" class="card hidden" data-tab-panel="health" role="tabpanel">
+            <div class="section-head">
+                <h2>2 ฟอร์มแบบสอบถามสุขภาพ (Health Survey)</h2>
+            </div>
+            <form id="healthForm" novalidate>
+                <div class="grid grid-3">
+                    <div class="row">
+                        <label for="age">อายุ</label>
+                        <input id="age" name="age" type="number" min="15" max="60" placeholder="15–60" required />
+                        <div class="error" id="ageError"></div>
+                    </div>
+                    <div class="row">
+                        <label>เพศ</label>
+                        <div role="group" aria-labelledby="sex">
+                            <label><input type="radio" name="sex" value="ชาย"> ชาย</label>
+                            <label style="margin-left:12px"><input type="radio" name="sex" value="หญิง"> หญิง</label>
+                            <label style="margin-left:12px"><input type="radio" name="sex" value="อื่นๆ"> อื่นๆ</label>
+                        </div>
+                        <div class="error" id="sexError"></div>
+                    </div>
+                </div>
+                <div class="grid grid-3">
+                    <div class="row">
+                        <label for="weight">น้ำหนัก (กก.)</label>
+                        <input id="weight" name="weight" type="number" step="0.1" min="1" placeholder="เช่น 60.5"
+                            required />
+                        <div class="error" id="weightError"></div>
+                    </div>
+                    <div class="row">
+                        <label for="height">ส่วนสูง (ซม.)</label>
+                        <input id="height" name="height" type="number" step="0.1" min="1" placeholder="เช่น 170"
+                            required />
+                        <div class="error" id="heightError"></div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:6px">
+                    <label>
+                        <input id="hasDisease" type="checkbox" name="hasDisease" /> มีโรคประจำตัว
+                    </label>
+                    <div id="diseaseMore" class="hidden">
+                        <label for="diseaseDetail" class="help">โปรดระบุรายละเอียดโรคประจำตัว</label>
+                        <textarea id="diseaseDetail" name="diseaseDetail" rows="3"
+                            placeholder="เช่น เบาหวาน ความดันโลหิตสูง"></textarea>
+                        <div class="error" id="diseaseDetailError"></div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn" type="submit">ส่งแบบสอบถาม</button>
+                    <button class="btn secondary" type="reset">ล้างข้อมูล</button>
+                </div>
+                <p class="help">เกณฑ์หมวดหมู่ BMI ที่ใช้: Asia-Pacific — น้ำหนักน้อย &lt; 18.5, ปกติ 18.5–22.9,
+                    น้ำหนักเกิน 23.0–24.9, อ้วน ≥ 25.0</p>
+            </form>
+        </section>
