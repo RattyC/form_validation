@@ -1,0 +1,17 @@
+{
+    "rewrites": [
+        {
+            "source": "/booking",
+            "destination": "/booking.html"
+        },
+        {
+            "source": "/health",
+            "destination": "/health.html"
+        },
+        {
+            "source": "/transfer",
+            "destination": "/transfer.html"
+        }
+    ],
+    "cleanUrls": true
+}
