@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>คำร้องขอโอนย้ายสาขาวิชา (Wizard)</title>
+    <style>
+        :root {
+            --bg: #f6f8f9;
+            --card: #fff;
+            --radius: 12px;
+            --shadow: 0 24px 60px rgba(0, 0, 0, .07);
+            --color-dark: #253746;
+            /* Nile Blue */
+            --color-accent: #6B7B8C;
+            /* Bermuda Gray */
+            --text: #1f2d44;
+            --muted: #6e7a8c;
+            --border: #d9e2ec;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .navbar {
+            background: var(--color-dark);
+            color: #fff;
+            padding: 10px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-brand span {
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-right: 6px;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-block;
+            transition: background.2s;
+            color: #BEC5C7;
+        }
+
+        .nav-links a.active,
+        .nav-links a:hover {
+            background: var(--color-accent);
+            color: #fff;
+        }
+
+        @media (max-width:800px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: var(--color-dark);
+                flex-direction: column;
+                width: 220px;
+                padding: 12px;
+                gap: 6px;
+                display: none;
+                border-radius: 0 0 12px 12px;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links a {
+                width: 100%;
+            }
+        }
+
+        .container {
+            max-width: 840px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 28px 32px;
+            position: relative;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+        }
+
+        .progressbar {
+            display: flex;
+            gap: 6px;
+            margin: 18px 0 24px;
+            list-style: none;
+            padding: 0;
+            font-size: 12px;
+        }
+
+        .progressbar li {
+            flex: 1;
+            position: relative;
+            text-align: center;
+            padding: 10px 6px;
+            border-radius: 8px;
+            background: #eef2f7;
+            color: #6e7a8c;
+            font-weight: 600;
+        }
+
+        .progressbar li.active {
+            background: var(--color-accent);
+            color: #fff;
+        }
+
+        .progressbar li:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+            margin-right: -3px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin-top: 14px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 14px;
+            margin-top: 6px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: .15s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, .2);
+            border-color: var(--color-accent);
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .inline {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--color-dark);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: #eef2f7;
+            color: var(--color-dark);
+        }
+
+        .btn-ghost {
+            background: none;
+            border: 1px solid var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .error {
+            color: #b91c1c;
+            font-size: 13px;
+            margin-top: 4px;
+            min-height: 18px;
+        }
+
+        .summary {
+            background: #f1f5fb;
+            border: 1px solid #d9e2ec;
+            padding: 14px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar" aria-label="หลัก navigation">
+        <div class="nav-brand">
+            <span>CSMJU</span>
+            <div>Souvenir / Forms</div>
+        </div>
+        <button class="nav-toggle" aria-label="เปิดเมนู" aria-expanded="false" id="navToggle">&#9776;</button>
+        <ul class="nav-links" id="navList">
+            <li><a href="booking.html" class="nav-item">จองตั๋วกิจกรรม</a></li>
+            <li><a href="health.html" class="nav-item">แบบสอบถามสุขภาพ</a></li>
+            <li><a href="#" class="nav-item active">โอนย้ายสาขาวิชา</a></li>
+        </ul>
+    </header>
+
+    <div class="container" aria-label="ฟอร์มโอนย้ายสาขาวิชา">
+        <div class="card" aria-live="polite">
+            <h1>คำร้องขอโอนย้ายสาขาวิชา (ภายในคณะ)</h1>
+            <p class="small">แบ่งเป็นขั้นตอนเพื่อความชัดเจนในการกรอกข้อมูล</p>
+
+            <ul class="progressbar" aria-label="ขั้นตอนการกรอก">
+                <li class="active">1. ข้อมูลส่วนตัว / ปัจจุบัน</li>
+                <li>2. ข้อมูลโอนย้าย &amp; คุณสมบัติ</li>
+                <li>3. เอกสาร &amp; ยืนยัน</li>
+            </ul>
+
+            <form id="transferForm" novalidate>
+                <!-- Step 1 -->
+                <div class="step active" aria-label="ขั้นตอนที่ 1">
+                    <label for="date">วันที่</label>
+                    <input type="text" id="date" name="date" placeholder="เช่น 1 สิงหาคม 2568" />
+
+                    <label for="prefix">คำนำหน้า</label>
+                    <select id="prefix" name="prefix" required>
+                        <option value="">-- เลือก --</option>
+                        <option>นาย</option>
+                        <option>นาง</option>
+                        <option>นางสาว</option>
+                    </select>
+                    <div class="error" id="errPrefix"></div>
+
+                    <label for="fullname">ชื่อ-นามสกุล</label>
+                    <input type="text" id="fullname" name="fullname" required placeholder="สมชาย ใจดี" />
+                    <div class="error" id="errFullname"></div>
+
+                    <label for="studentID">รหัสนักศึกษา</label>
+                    <input type="text" id="studentID" name="studentID" required placeholder="ตัวเลข 8 หลัก"
+                        pattern="\\d{8}" />
+                    <div class="error" id="errStudentID"></div>
+
+                    <label for="phone">เบอร์มือถือ</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="0XXXXXXXXX" pattern="0\\d{9}" />
+                    <div class="error" id="errPhone"></div>
+
+                    <label for="system">ระบบการเรียน</label>
+                    <select id="system" name="system" required>
+                        <option value="">-- เลือก --</option>
+                        <option>ภาคปกติ</option>
+                        <option>ภาคสมทบ</option>
+                    </select>
+                    <div class="error" id="errSystem"></div>
+
+                    <label for="program">หลักสูตร</label>
+                    <select id="program" name="program" required>
+                        <option value="">-- เลือก --</option>
+                        <option>4–5 ปี</option>
+                        <option>4 ปีเทียบเข้าเรียน (2 ปี)</option>
+                    </select>
+                    <div class="error" id="errProgram"></div>
+
+                    <label for="currentMajor">สาขาวิชา (ปัจจุบัน)</label>
+                    <input type="text" id="currentMajor" name="currentMajor" required />
+                    <div class="error" id="errCurrentMajor"></div>
+
+                    <label for="currentFaculty">คณะ (ปัจจุบัน)</label>
+                    <input type="text" id="currentFaculty" name="currentFaculty" required />
+                    <div class="error" id="errCurrentFaculty"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step" aria-label="ขั้นตอนที่ 2">
+                    <label for="newMajor">สาขาวิชาที่ต้องการโอนย้าย</label>
+                    <input type="text" id="newMajor" name="newMajor" required />
+                    <div class="error" id="errNewMajor"></div>
+
+                    <label for="newFaculty">คณะที่จะรับโอนย้าย</label>
+                    <input type="text" id="newFaculty" name="newFaculty" required />
+                    <div class="error" id="errNewFaculty"></div>
+
+                    <label for="reason">เหตุผลในการโอนย้าย</label>
+                    <textarea id="reason" name="reason" rows="3" required
+                        placeholder="อธิบายเหตุผลอย่างน้อย 20 อักษร"></textarea>
+                    <div class="error" id="errReason"></div>
+
+                    <label>คุณสมบัติ (ติ๊กที่ตรงกับหลักสูตรที่เกี่ยวข้อง)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="qual2year" name="qual2year" /> หลักสูตร 4 ปีเทียบเข้าเรียน (2
+                            ปี): ได้ศึกษาไม่น้อยกว่า 1 ภาค และ มีหน่วยกิต ≥ 18 แต้ม GPAX ≥ 2.00</label>
+                        <label><input type="checkbox" id="qual4year" name="qual4year" /> หลักสูตร 4 ปี:
+                            ได้ศึกษาไม่น้อยกว่า 2 ภาค และ มีหน่วยกิต ≥ 30 แต้ม GPAX ≥ 2.00</label>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step" aria-label="ขั้นตอนที่ 3">
+                    <label for="transcript">อัปโหลดใบรายงานผลการศึกษา</label>
+                    <input type="file" id="transcript" name="transcript" accept=".pdf,image/*" required />
+                    <div class="error" id="errTranscript"></div>
+
+                    <div class="summary" aria-label="สรุปข้อมูลก่อนส่ง">
+                        <div><strong>ชื่อ-นามสกุล:</strong> <span id="summaryFullname"></span></div>
+                        <div><strong>รหัสนักศึกษา:</strong> <span id="summaryStudentID"></span></div>
+                        <div><strong>คณะเดิม / สาขาเดิม:</strong> <span id="summaryCurrentFaculty"></span> / <span
+                                id="summaryCurrentMajor"></span></div>
+                        <div><strong>คณะที่รับโอน / สาขาใหม่:</strong> <span id="summaryNewFaculty"></span> / <span
+                                id="summaryNewMajor"></span></div>
+                        <div><strong>เหตุผล:</strong> <span id="summaryReason"></span></div>
+                        <div><strong>คุณสมบัติ:</strong> <span id="summaryQual"></span></div>
+                        <div><strong>ชื่อไฟล์:</strong> <span id="summaryTranscript"></span></div>
+                    </div>
+
+                    <label style="margin-top:12px;">
+                        <input type="checkbox" id="confirm" required /> ข้าพเจ้ายืนยันว่าข้อมูลทั้งหมดถูกต้องและครบถ้วน
+                    </label>
+                    <div class="error" id="errConfirm"></div>
+                </div>
+
+                <!-- Controls -->
+                <div class="buttons">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" disabled>ย้อนกลับ</button>
+                    <button type="button" class="btn btn-primary" id="nextBtn">ถัดไป</button>
+                    <button type="submit" class="btn submit" id="submitBtn" style="display:none;">ส่งคำร้อง</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Navbar toggle (mobile)
+        const navToggle = document.getElementById('navToggle');
+        const navList = document.getElementById('navList');
+        navToggle.addEventListener('click', () => {
+            const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+            navToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+            navList.classList.toggle('show');
+        });
+
+        const steps = document.querySelectorAll('.step');
+        const progressItems = document.querySelectorAll('.progressbar li');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        let current = 0;
+
+        function updateUI() {
+            steps.forEach((s, i) => s.classList.toggle('active', i === current));
+            progressItems.forEach((p, i) => p.classList.toggle('active', i <= current));
+            prevBtn.disabled = current === 0;
+            nextBtn.style.display = current === steps.length - 1 ? 'none' : 'inline-flex';
+            submitBtn.style.display = current === steps.length - 1 ? 'inline-flex' : 'none';
+            if (current === steps.length - 1) {
+                // populate summary
+                document.getElementById('summaryFullname').textContent = document.getElementById('fullname').value;
+                document.getElementById('summaryStudentID').textContent = document.getElementById('studentID').value;
+                document.getElementById('summaryCurrentFaculty').textContent = document.getElementById('currentFaculty').value;
+                document.getElementById('summaryCurrentMajor').textContent = document.getElementById('currentMajor').value;
+                document.getElementById('summaryNewFaculty').textContent = document.getElementById('newFaculty').value;
+                document.getElementById('summaryNewMajor').textContent = document.getElementById('newMajor').value;
+                document.getElementById('summaryReason').textContent = document.getElementById('reason').value;
+                const quals = [];
+                if (document.getElementById('qual2year').checked) quals.push('4 ปีเทียบเข้าเรียน');
+                if (document.getElementById('qual4year').checked) quals.push('4 ปี');
+                document.getElementById('summaryQual').textContent = quals.join(' / ') || '-';
+                const file = document.getElementById('transcript').files[0];
+                document.getElementById('summaryTranscript').textContent = file ? file.name : '-';
+            }
+        }
+
+        function validateStep(idx) {
+            // simple required check per step
+            let ok = true;
+            // clear errors
+            document.querySelectorAll('.error').forEach(e => e.textContent = '');
+
+            if (idx === 0) {
+                if (!document.getElementById('prefix').value) { document.getElementById('errPrefix').textContent = 'กรุณาเลือกคำนำหน้า'; ok = false; }
+                if (!document.getElementById('fullname').value.trim() || document.getElementById('fullname').value.trim().split(/\s+/).length < 2) {
+                    document.getElementById('errFullname').textContent = 'กรุณากรอกชื่อ-นามสกุล 2 คำขึ้นไป'; ok = false;
+                }
+                if (!/^\d{8}$/.test(document.getElementById('studentID').value.trim())) {
+                    document.getElementById('errStudentID').textContent = 'รหัสต้องเป็นตัวเลข 8 หลัก'; ok = false;
+                }
+                if (!/^0\d{9}$/.test(document.getElementById('phone').value.trim())) {
+                    document.getElementById('errPhone').textContent = 'เบอร์ต้อง 10 หลัก ขึ้นต้น 0'; ok = false;
+                }
+                if (!document.getElementById('system').value) { document.getElementById('errSystem').textContent = 'ต้องเลือกระบบ'; ok = false; }
+                if (!document.getElementById('program').value) { document.getElementById('errProgram').textContent = 'ต้องเลือกหลักสูตร'; ok = false; }
+                if (!document.getElementById('currentMajor').value.trim()) { document.getElementById('errCurrentMajor').textContent = 'กรุณากรอกสาขาวิชา'; ok = false; }
+                if (!document.getElementById('currentFaculty').value.trim()) { document.getElementById('errCurrentFaculty').textContent = 'กรุณากรอกคณะ'; ok = false; }
+            }
+            if (idx === 1) {
+                if (!document.getElementById('newMajor').value.trim()) { document.getElementById('errNewMajor').textContent = 'กรุณากรอกสาขาใหม่'; ok = false; }
+                if (!document.getElementById('newFaculty').value.trim()) { document.getElementById('errNewFaculty').textContent = 'กรุณากรอกคณะที่จะรับโอน'; ok = false; }
+                if (!document.getElementById('reason').value.trim() || document.getElementById('reason').value.trim().length < 20) { document.getElementById('errReason').textContent = 'เหตุผลต้องอย่างน้อย 20 อักษร'; ok = false; }
+            }
+            if (idx === 2) {
+                if (document.getElementById('transcript').files.length === 0) { document.getElementById('errTranscript').textContent = 'ต้องแนบเอกสาร'; ok = false; }
+                if (!document.getElementById('confirm').checked) { document.getElementById('errConfirm').textContent = 'ต้องยืนยันข้อมูล'; ok = false; }
+            }
+            return ok;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (!validateStep(current)) return;
+            current++;
+            updateUI();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (current > 0) current--;
+            updateUI();
+        });
+
+        document.getElementById('transferForm').addEventListener('submit', e => {
+            e.preventDefault();
+            if (!validateStep(current)) return;
+            alert('ส่งคำร้องโอนย้ายสาขาวิชาเรียบร้อยแล้ว');
+            e.target.reset();
+            current = 0;
+            updateUI();
+        });
+        updateUI();
+    </script>
+</body>
+
+</html>
