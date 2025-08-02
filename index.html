@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard • CSMJU Forms</title>
+    <meta name="description" content="หน้าแรกเชื่อมไปยังฟอร์ม จองตั๋ว, แบบสอบถามสุขภาพ, และคำร้องโอนย้ายสาขาวิชา" />
+    <style>
+        :root {
+            --bg: #f0f4fa;
+            --card: #fff;
+            --radius: 14px;
+            --shadow: 0 24px 60px rgba(0, 0, 0, .07);
+            --dark: #253746;
+            --accent: #6B7B8C;
+            --muted: #6e7a8c;
+            --radius-sm: 8px;
+            --transition: .2s;
+            --focus: rgba(59, 130, 246, .25);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: #1f2d44;
+            line-height: 1.4;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .navbar {
+            background: var(--dark);
+            color: #fff;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .nav-brand span {
+            background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #fff;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 16px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu li {}
+
+        .nav-menu a {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            color: #BEC5C7;
+        }
+
+        .nav-menu a.active,
+        .nav-menu a:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .hero {
+            max-width: 960px;
+            margin: 32px auto 8px;
+            padding: 0 16px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            margin: 6px 0 0;
+            color: var(--muted);
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+            padding: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            margin-top: 16px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px 18px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 32px 80px rgba(0, 0, 0, .08);
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-desc {
+            flex: 1;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .btn {
+            margin-top: auto;
+            align-self: start;
+            padding: 10px 16px;
+            background: var(--dark);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: var(--dark);
+            border: 1px solid var(--dark);
+        }
+
+        .badge {
+            background: #3b82f6;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        @media (max-width:800px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar" aria-label="Main navigation">
+        <div class="nav-brand">
+            <span>CSMJU</span> Forms Hub
+        </div>
+        <ul class="nav-menu" aria-label="เมนูหลัก">
+            <li><a href="index.html" class="nav-link" data-name="home">หน้าหลัก</a></li>
+            <li><a href="event-booking.html" class="nav-link" data-name="booking">จองตั๋วกิจกรรม</a></li>
+            <li><a href="health-survey.html" class="nav-link" data-name="health">แบบสอบถามสุขภาพ</a></li>
+            <li><a href="transfer-form.html" class="nav-link" data-name="transfer">โอนย้ายสาขาวิชา</a></li>
+        </ul>
+    </header>
+
+    <section class="hero">
+        <h1>ศูนย์แบบฟอร์ม CSMJU</h1>
+        <p>เข้าใช้งานฟอร์มต่าง ๆ: จองตั๋วกิจกรรม, ตรวจสุขภาพเบื้องต้น, และคำร้องขอโอนย้ายสาขาวิชา โดยไม่ต้องล็อกอิน</p>
+    </section>
+
+    <main class="container" aria-label="ลิงก์ไปยังฟอร์มต่าง ๆ">
+        <div class="grid">
+            <div class="card" aria-label="จองตั๋วกิจกรรม">
+                <div class="card-title">จองตั๋วกิจกรรม</div>
+                <div class="card-desc">ฟอร์มจองตั๋วกิจกรรมพร้อม validation แบบเรียลไทม์, จำกัดจำนวนตั๋วสำหรับ
+                    VIP/Premium และสรุปการจอง</div>
+                <div class="small">มี modal ยืนยันการจอง</div>
+                <a href="event-booking.html" class="btn">ไปที่ฟอร์ม</a>
+            </div>
+
+            <div class="card" aria-label="แบบสอบถามสุขภาพ">
+                <div class="card-title">แบบสอบถามสุขภาพ</div>
+                <div class="card-desc">กรอกอายุ เพศ น้ำหนัก ส่วนสูง, ดูผล BMI แบบทันที พร้อมคำแนะนำตามหมวดหมู่
+                    Asia-Pacific</div>
+                <div class="small">แสดงหมวดหมู่และ advice</div>
+                <a href="health-survey.html" class="btn">ไปที่ฟอร์ม</a>
+            </div>
+
+            <div class="card" aria-label="คำร้องโอนย้ายสาขาวิชา">
+                <div class="card-title">คำร้องโอนย้ายสาขาวิชา</div>
+                <div class="card-desc">แบบฟอร์ม Wizard แยกขั้นตอน: ข้อมูลเดิม, ข้อมูลโอนย้าย, แนบเอกสารและยืนยัน</div>
+                <div class="small">มี progress, validation ขั้นตอนละส่วน</div>
+                <a href="transfer-form.html" class="btn">ไปที่ฟอร์ม</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // set active link based on path
+        const path = location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-link').forEach(a => {
+            const href = a.getAttribute('href');
+            if (href === path || (href === 'index.html' && (!path || path === ''))) {
+                a.classList.add('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
